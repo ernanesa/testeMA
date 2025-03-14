@@ -16,16 +16,27 @@ Você pode acessar o site de duas maneiras:
 2. **Link com redirecionamento automático:**
    - [https://ernanesa.github.io/testeMA/](https://ernanesa.github.io/testeMA/)
 
+## 🔐 Funcionalidade de Login
+
+A página agora inclui um botão de login no canto superior direito. Ao clicar neste botão, um popup será exibido solicitando as credenciais do usuário (login e senha).
+
+**Características do sistema de login:**
+- Interface de login em popup modal
+- Campos para nome de usuário e senha
+- Validação básica de formulário
+- Feedback visual para o usuário
+
 ## 🛠️ Tecnologias Utilizadas
 
 - HTML5
 - CSS3 (incorporado)
+- JavaScript (para funcionalidade de login)
 - GitHub Pages para hospedagem
 
 ## 📂 Estrutura do Repositório
 
 - `index.html` - Arquivo de redirecionamento na raiz
-- `pages/index.html` - Página principal do site
+- `pages/index.html` - Página principal do site com funcionalidade de login
 
 ## 📝 Recursos da Página
 
@@ -33,6 +44,7 @@ Você pode acessar o site de duas maneiras:
 - Design moderno e limpo
 - Código HTML semântico
 - Estilização CSS incorporada
+- Sistema de login em popup
 
 ## 📄 Licença
 
