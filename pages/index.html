@@ -25,6 +25,7 @@
             padding: 1rem 0;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
         }
         h1 {
             margin: 0;
@@ -52,9 +53,113 @@
             text-decoration: none;
             border-radius: 4px;
             transition: background-color 0.3s;
+            cursor: pointer;
         }
         .btn:hover {
             background-color: #3a5a8f;
+        }
+        
+        /* Estilos para o botão de login */
+        .login-btn {
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            background-color: #ffffff;
+            color: #4a6da7;
+            border: 2px solid #ffffff;
+            font-weight: bold;
+        }
+        .login-btn:hover {
+            background-color: #f0f0f0;
+            color: #3a5a8f;
+        }
+        
+        /* Estilos para o modal de login */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 300px;
+            max-width: 80%;
+            animation: modalopen 0.4s;
+        }
+        
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-60px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover,
+        .close:focus {
+            color: #333;
+            text-decoration: none;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            border-color: #4a6da7;
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a6da7;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3a5a8f;
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 </head>
@@ -62,6 +167,7 @@
     <header>
         <div class="container">
             <h1>Teste MA</h1>
+            <button class="btn login-btn" id="loginBtn">Login</button>
         </div>
     </header>
     
@@ -77,9 +183,31 @@
                 <li>Design moderno e limpo</li>
                 <li>Código HTML semântico</li>
                 <li>Estilização CSS incorporada</li>
+                <li>Sistema de login em popup</li>
             </ul>
             
             <a href="https://github.com/ernanesa/testeMA" class="btn">Ver no GitHub</a>
+        </div>
+    </div>
+    
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" name="username" required>
+                    <div class="error-message" id="usernameError">Por favor, insira um nome de usuário válido.</div>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required>
+                    <div class="error-message" id="passwordError">A senha deve ter pelo menos 6 caracteres.</div>
+                </div>
+                <button type="submit" class="submit-btn">Entrar</button>
+            </form>
         </div>
     </div>
     
@@ -88,5 +216,73 @@
             <p>&copy; 2025 Teste MA. Todos os direitos reservados.</p>
         </div>
     </footer>
+    
+    <script>
+        // Obter elementos do DOM
+        const modal = document.getElementById('loginModal');
+        const loginBtn = document.getElementById('loginBtn');
+        const closeBtn = document.getElementsByClassName('close')[0];
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
+        
+        // Abrir o modal quando o botão de login for clicado
+        loginBtn.onclick = function() {
+            modal.style.display = 'block';
+        }
+        
+        // Fechar o modal quando o botão de fechar for clicado
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+            resetForm();
+        }
+        
+        // Fechar o modal quando clicar fora dele
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+                resetForm();
+            }
+        }
+        
+        // Validar o formulário quando for enviado
+        loginForm.onsubmit = function(e) {
+            e.preventDefault();
+            
+            let isValid = true;
+            
+            // Validar nome de usuário
+            if (usernameInput.value.trim() === '') {
+                usernameError.style.display = 'block';
+                isValid = false;
+            } else {
+                usernameError.style.display = 'none';
+            }
+            
+            // Validar senha
+            if (passwordInput.value.length < 6) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            } else {
+                passwordError.style.display = 'none';
+            }
+            
+            // Se o formulário for válido, processar o login
+            if (isValid) {
+                alert('Login realizado com sucesso!\nUsuário: ' + usernameInput.value);
+                modal.style.display = 'none';
+                resetForm();
+            }
+        }
+        
+        // Resetar o formulário
+        function resetForm() {
+            loginForm.reset();
+            usernameError.style.display = 'none';
+            passwordError.style.display = 'none';
+        }
+    </script>
 </body>
 </html>
